@@ -1,4 +1,4 @@
-# ajax
+# Ajax
 
 ### Ajax practice repository
 <hr>
