@@ -1,4 +1,4 @@
-# Ajax
+# Ajax & JQuery
 
 ### Ajax practice repository
 <hr>
