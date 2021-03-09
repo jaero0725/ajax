@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>간단한 Ajax 예제</title>
+<!-- 실제로 쓰려면, JQuery를 사용하는게 좋다.  -->
+<script type="text/javascript">
+// XMLHttprequest : 웹서버와 통신을 담당함. 사용자의 요청을 웹서버에 전송 및 웹서버로부터 받은 과를 웹브라우저에 전달함.  
+var httpRequest = null;
+function getXMLHttpRequest(){
+	console.log("getXMLHttpRequest 실행");
+	if(window.ActiveXObject){
+		try{
+			//IE 버전
+			return new ActiveXObject("Msxml2.XMLHTTP");
+		} catch(e){
+			try{
+				//나머지 버전들.
+				return new ActiveXObject("Microsoft.XMLHTTP");
+			} catch(e){
+				return null;
+			}
+		} 
+	} else if(window.XMLHttpRequest){
+		return new XMLHttpRequest();
+	} else{
+		return null;
+	}
+}
+
+function load(url){
+	console.log("load 실행");
+	httpRequest = getXMLHttpRequest();
+	httpRequest.onreadystatechange = viewMessage;
+	/*
+		open() 함수는 세개의 인자를 입력받는다.
+		1. HTTP 메서드 지정
+		2. 접속할 url입력
+		3. 동기/비동기 방식 지정 
+			- true : 비동기
+			- false : 동기
+	*/
+	
+	httpRequest.open("GET", url, true);
+	/*
+		send() : 사용자의 요청을 서버로 보내는 역할.
+	*/
+	httpRequest.send(null);
+}
+
+function viewMessage(){
+	//서버에서 완전하게 응답이 도착한경우
+	console.log("viewMesasge 실행");
+	
+	/*
+	 readyState 프로퍼티 값
+	 0 : 객체만 생성되고 아직 초기화되지않은 상태. open 메서드가 호출되지 않음.
+	 1 : open 메서드가 호출되고 아직 send 메서드가 호출되지 않은 상태
+	 2 : send 메서드가 호출되었지만 status와 헤더는 도착하지 않ㄴ은 상태
+	 3 : 데이터의 일부를 받은 상태
+	 4 : 데이터를 전부 받은 상태. 완전한 데이터 이용가능. 
+	*/
+	
+	if(httpRequest.readyState == 4){
+		console.log("httpRequest.readyState == 4 | 완료");
+		//정상적으로 수행한 경우
+		if(httpRequest.status == 200){
+			console.log("httpRequest.status == 200 | 정상수행");
+			alert(httpRequest.responseText);
+		} 
+		//문제가 발생한 경우 
+		else{
+			alert("실패 :" + httpRequest.status);
+		}
+	} else{
+		console.log("httpRequest.readyState == "+ httpRequest.readyState);
+	}
+}
+</script>
+</head>
+<body>
+	<input type="button" value=simple.txt onclick="load('simple.txt')"/>
+	<input type="button" value=simple2.txt onclick="load('simple2.txt')"/>
+	<input type="button" value=simple.jsp onclick="load('simple.jsp')"/>
+	<input type="button" value=simple2.jsp onclick="load('simple2.jsp')"/>
+</body>
+</html>

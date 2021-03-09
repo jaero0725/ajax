@@ -1,0 +1,107 @@
+<!--클라이언트측 기능 구현 -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../ch01/httpRequest.js"></script> <!-- js 파일 추가 -->
+<script type="text/javascript">
+
+var checkFirst = false;
+var lastKeyword = '';
+var loopSendKeyword = false;
+
+function startSuggest(){
+	if(checkFirst == false){
+		setTimeout("sendKeyword();", 500);
+		loopSendKeyword = true;
+	}
+	checkFirst = true; //0.5초 후에 sendKeyword() 함수를 실행 
+}
+
+function sendKeyword(){
+	if(loopSendKeyword == false) return;
+	var keyword = document.search.keyword.value;
+	if(keyword == ''){
+		lastKeyword = '';
+		hide('suggest');
+	} else if(keyword != lastKeyword){
+		lastKeyword = keyword;
+		if(keyword !=''){
+			var params = "keyword="+ encodeURIComponent(keyword);
+			sendRequest("suggest.jsp",params,displayResult,"POST");
+			console.log("보냈다~");
+		} else{
+			hide("suggest");
+		}
+	}
+	setTimeout("sendKeyword();",500);
+}
+
+function displayResult(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			console.log("성공 || httpRequest.status : " + httpRequest.status);
+			var resultText = httpRequest.responseText;
+			console.log("resultText : " +resultText);
+			var result = resultText.split("|");
+			var count = parseInt(result[0]);
+			console.log("count : " +count);
+			var keywordList =null;
+			if(count > 0){
+				keywordList = result[1].split(',');
+				console.log("출력 해줄 검색 단어 : " + keywordList);
+				var html ='';
+				for(var i = 0 ; i<keywordList.length; i++){
+					html +="<a href =\"javascript:select('" + keywordList[i] + "')\">" + keywordList[i] + "</a><br>";
+				}
+				var listView = document.getElementById("suggestList");
+				console.log("html: " + html);
+				listView.innerHTML = html;
+				show('suggest');
+			} else{
+				hide('suggest');
+			}
+		} else{
+			console.log("httpRequest.status : " + httpRequest.status);
+		}
+	}
+}
+function select(selectedKeyword){
+	document.search.keyword.value = selectedKeyword;
+	loopSendKeyword = false;
+	checkFirst = false;
+	hide("suggest");
+}
+function show(elementId){
+	var element = document.getElementById(elementId);
+	if(element){
+		elemenet.style.display = '';
+	}
+}
+
+function hide(elementId){
+	var element = document.getElementById(elementId);
+	if(element){
+		console.log(element);
+		element.style.display = "none";
+	}
+}
+</script>
+
+<style>
+	#view {
+		border : 1px solid #999;
+	}
+</style>
+</head>
+<body>
+<form name="search">
+	<input type="text" name="keyword" id="keyword" onkeydown="startSuggest()"/>
+	<input type="button" value="검색"/>
+	<div id ="suggest" style="position:absolute; left:0px; top:30px;">
+		<div id="suggestList"></div>
+	</div>
+</form>
+</body>
+</html>

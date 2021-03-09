@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script>
+var count = 0;
+
+function appendItem(){
+	console.log("click item");
+	count++;
+	
+	//newItem 태그명 설정 
+	var newItem = document.createElement("div");
+	
+	//newItem id값 설정
+	newItem.setAttribute("id","item_"+count);
+	var html = "새로 추가된 아이템[" + count +"]" + "<input type='button' value='삭제' 	onclick='removeItem(" + count + ")'/>";
+	
+	//newItem innerHTML 설정
+	newItem.innerHTML = html;
+	
+	//console 출력으로 결과 확인.
+	console.log(newItem.innerHTML);
+	console.log(newItem.tagName);
+	console.log(newItem.id);
+	
+	var itemListNode = document.getElementById("itemList");
+	itemListNode.appendChild(newItem);
+}
+
+function removeItem(idCount){
+	var item = document.getElementById("item_" + idCount);
+	if(item != null){
+		item.parentNode.removeChild(item);
+	}
+}
+
+</script>
+</head>
+<body>
+	<input type="button" value="추가" onclick="appendItem()"/>
+	<div id="itemList">
+	</div>
+</body>
+</html>

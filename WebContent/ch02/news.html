@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>뉴스</title>
+<script type="text/javascript" src="../ch01/httpRequest.js"></script> <!-- js 파일 추가 -->
+<script type="text/javascript">
+	function loadNews(){
+		sendRequest("getNewsTitle.jsp",null, loadedNews,"GET");
+	}
+	function loadedNews(){
+		if(httpRequest.readyState == 4) {
+			if(httpRequest.status == 200){
+				var newsList = document.getElementById("newsList");
+				newsList.innerHTML = httpRequest.responseText; //텍스트 받은걸 그대로 쓰기.
+			}
+		}
+	}
+	window.onload = function(){
+		loadNews();
+	}
+</script>
+</head>
+<body>
+	<div id="newsList">
+	</div>
+</body>
+</html>

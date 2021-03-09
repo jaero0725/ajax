@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>책정보 보기</title>
+<script type="text/javascript" src="../ch01/httpRequest.js"></script> <!-- js 파일 추가 -->
+<script>
+function loadBooks(){
+	sendRequest("books.jsp",null,loadedBooks, "GET");
+}
+function loadedBooks(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			var xmlDoc =httpRequest.responseXML;
+			var bookList = xmlDoc.getElementsByTagName("book");
+			var message = "책 개수 : " + bookList.length +"권\n";
+			
+			for(let i = 0; i < bookList.length ; i++){
+				let book = bookList.item(i);
+				let titleValue = 
+					book.getElementsByTagName("title").item(0).firstChild.nodeValue;
+				
+				let authorValue =
+					book.getElementsByTagName("author").item(0).firstChild.nodeValue;
+				
+				message += titleValue + "(" + authorValue + ")\n";
+			}
+			console.log(message);
+		}
+	}
+}
+
+window.onload = function(){
+	loadBooks();
+}
+</script>
+</head>
+<body>
+책정보 console에 출력합니다. <br>
+console 창을 확인하세요.
+</body>
+</html>
