@@ -29,30 +29,22 @@ function processXML(){
 	var subjects = xmlDoc.getElementsByTagName("subject");
 	
 	for(let i = 0 ; i < subjects.length; i++){
-		trTag = document.createElement("tr");
-		subject = subjects[i];
-		
-		var child = subject.childNodes;
-		var tmp = subject.children;
-		
-		//오류 가뜸. 
-		console.log("subject : "+subject.tagName);  // Okay
-		console.log("subject.firstChild : " + tmp.tagName);
-		console.log("child : " + child.tagName);
-		
-		for(let j = 0; j < child.length; j++){
-			tdTag = document.createElement("td");
-			
-			console.log("Allchild : "+ child[j]);
-			console.log("child["+j+"] : "+child[j].childNodes[j]);
-			console.log("child["+j+"] : "+child[j].childNodes[j]);
-			
-			let text = document.createTextNode(child[j].firstChild.nodeValue);
+		trTag=document.createElement("tr");
+		subject=subjects.item(i);
+		var child=subject.childNodes;
+		for(let a=0;a<child.length;a++){
+			if(child.item(a).nodeType==1){
+				arr.push(child.item(a).firstChild.nodeValue);
+			}
+		}
+		for(let j=0;j<arr.length;j++){
+			tdTag=document.createElement("td");
+			let text=document.createTextNode(arr[j]);
 			tdTag.appendChild(text);
 			trTag.appendChild(tdTag);
-			
-			document.getElementById("resultDisplay").appendChild(trTag);
 		}
+		document.getElementById("resultDisplay").appendChild(trTag);
+		arr= new Array();
 	}
 }
 
