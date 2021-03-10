@@ -9,4 +9,3 @@
 #### chap04 : JSON 이용한 예제
 #### chap05 : Ajax로 구현한 댓글 예제
 #### chap06 : JQuery와 Ajax를 활용한 예제
-
