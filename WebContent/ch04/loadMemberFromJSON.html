@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript" src="member.js"></script>
+<script type="text/javascript">
+	window.onload =function(){
+		new ajax.xhr.Request("member_json.jsp","",viewInfo,"GET");
+	}
+	
+	function viewInfo(req){
+		if(req.readyState == 4){
+			if(req.status ==200){
+				//eval을 쓰지말자 - json2를써야한다. 
+				var result = eval("("+req.responseText +")");
+				if(result.code == 'success'){
+					var m = result.data.member;
+					alert(m.id + "[" + m.name +"]");
+				} else{
+					alert("실패");
+				}
+			}else{
+				console.log("error : " + req.status);
+			}
+		} 
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>

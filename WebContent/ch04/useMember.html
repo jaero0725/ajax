@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../ch03/log.js"></script>
+<script type="text/javascript" src="member.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var mem = new Member("zeroco","최재호","9400001000000");
+	log("변경전");
+	log("회원 : " + mem.toString());
+	log("나이 : " + mem.getAge());
+	
+	mem.setValue("zeroco02","최재호","9600001000000")
+	log("변경후");
+	log("회원 : " + mem.toString());
+	log("나이 : " + mem.getAge());
+}
+</script>
+</head>
+<body>
+	<div id="debugConsole"></div>
+</body>
+</html>
